@@ -1,0 +1,23 @@
+// To look a Graph API calls in the time frame for the app
+MicrosoftGraphActivityLogs
+| where TimeGenerated > ago(<timeframeindays>)
+| where AppId == "<AppID/clientID>"
+| summarize UriCount=dcount(RequestUri) by AppId,RequestUri,ServicePrincipalId, ResponseStatusCode
+ 
+//To look for mail folder and message search
+MicrosoftGraphActivityLogs
+| where TimeGenerated > ago(<timeframeindays>)
+| where AppId == "<AppID/clientID>"
+| where RequestMethod == "GET"
+| where RequestUri has "$filter="
+| where RequestUri has "/mailfolders" or RequestUri has "/messages"
+| summarize UriCount=dcount(RequestUri) by AppId,RequestUri,ServicePrincipalId, ResponseStatusCode
+ 
+//To look for mail search for a keyword
+MicrosoftGraphActivityLogs
+| where TimeGenerated > ago(<timeframeindays>)
+| where AppId == "<AppID/clientID>"
+| where RequestMethod == "GET"
+| where RequestUri has "subject"
+| where RequestUri has "/mailfolders" or RequestUri has "/messages"
+| summarize UriCount=dcount(RequestUri) by AppId,RequestUri,ServicePrincipalId, ResponseStatusCode

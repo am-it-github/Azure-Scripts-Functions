@@ -1,0 +1,4 @@
+CloudAppEvents
+|where AccountDisplayName contains "LAST, FIRST"
+| order by Timestamp asc 
+//|project Timestamp, ActionType, Application, AccountDisplayName, ObjectName, ObjectType

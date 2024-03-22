@@ -1,0 +1,1 @@
+| where hour !between (08 .. 18)

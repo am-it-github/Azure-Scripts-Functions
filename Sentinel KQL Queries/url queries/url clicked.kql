@@ -1,0 +1,2 @@
+UrlClickEvents
+| where Url contains "XXXXX"

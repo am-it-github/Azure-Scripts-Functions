@@ -1,0 +1,3 @@
+let filehash = "51c292004f44e0d5ca2cbd87831b9e86eb3d06d1";
+find in (DeviceFileEvents)
+where SHA1 == filehash

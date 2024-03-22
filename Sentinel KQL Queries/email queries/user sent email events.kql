@@ -1,0 +1,3 @@
+EmailEvents
+| where SenderFromAddress contains "<EMAIL HERE>"
+//|project Timestamp, SenderMailFromAddress, SenderFromAddress, RecipientEmailAddress, Subject, EmailDirection

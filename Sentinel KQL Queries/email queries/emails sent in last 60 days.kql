@@ -1,0 +1,5 @@
+EmailEvents
+| where SenderFromAddress contains "EMAIL"
+| where Timestamp > ago(60d)
+| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject, EmailDirection, AttachmentCount, UserLevelAction, UserLevelPolicy
+| order by Timestamp asc 

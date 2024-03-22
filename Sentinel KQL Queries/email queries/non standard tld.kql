@@ -1,0 +1,3 @@
+EmailEvents
+| where not (SenderMailFromDomain has_any (".com", ".net", ".org", ".uk"))
+| where not (SenderFromDomain has_any (".com", ".net", ".org", ".uk"))

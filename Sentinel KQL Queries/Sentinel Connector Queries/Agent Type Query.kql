@@ -1,0 +1,11 @@
+//AMA Agent Query
+Heartbeat  
+| where OSType == "Windows"  
+| where Category == "Azure Monitor Agent"  
+|distinct Computer
+
+//Non AMA Agent Query
+Heartbeat  
+| where OSType == "Windows"  
+| where Category != "Azure Monitor Agent"  
+|distinct Computer

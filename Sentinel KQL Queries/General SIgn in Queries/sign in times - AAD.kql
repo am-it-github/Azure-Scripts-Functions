@@ -1,0 +1,16 @@
+//GENERAL LOGS
+SigninLogs 
+| where UserPrincipalName contains "user.name@" 
+| where IsInteractive == true
+| summarize SignInCount = count() by UserPrincipalName, TimeGenerated, AppDisplayName, ClientAppUsed, Location
+
+
+//SPLIT DAY AND TIME
+SigninLogs 
+| where UserPrincipalName contains "user.name@" 
+| where IsInteractive == true
+| extend FormattedTimeGenerated = format_datetime(TimeGenerated, 'dd-MM-yyyy HH:mm:ss')
+| summarize DailySignInCount = count() by UserPrincipalName, FormattedTimeGenerated, AppDisplayName, ClientAppUsed, Location 
+| extend FormattedDate = substring(FormattedTimeGenerated, 0, 10),
+         TimeOfDay = substring(FormattedTimeGenerated, 11, 8)
+| summarize TotalSignInCount = count() by UserPrincipalName, FormattedDate, TimeOfDay, AppDisplayName, ClientAppUsed, Location

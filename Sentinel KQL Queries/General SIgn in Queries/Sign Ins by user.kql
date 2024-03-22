@@ -1,0 +1,19 @@
+// Define the variable for the UserPrincipalName of the user account to investigate
+let upn = "user@example.com"; // The UserPrincipalName of the user account. Example: user@example.com
+// Define the variable for the timespan
+let timeAgo = ago(7d); // The time to look back. Example: 7d, 7h
+// Join both tables together with the union operator
+union SigninLogs, AADNonInteractiveUserSignInLogs
+| where TimeGenerated > timeAgo
+| where OperationName == "Sign-in activity" // Filter on Sign-in activities
+| where Category == "SignInLogs" or Category == "NonInteractiveUserSignInLogs" // Filter the category of logs
+| where UserPrincipalName == upn // Filter on UserPrincipalName
+// Extend and handle the DeviceDetail column
+| extend DeviceDetail = iff(isempty(DeviceDetail_dynamic) == true, parse_json(DeviceDetail_string), DeviceDetail_dynamic)
+// Extend and handle the LocationDetails column
+| extend LocationDetails = iff(isempty(LocationDetails_dynamic) == true, parse_json(LocationDetails_string), LocationDetails_dynamic)
+// Extend and handle the MfaDetail column
+| extend MfaDetail = iff(isempty(MfaDetail_dynamic) == true, parse_json(MfaDetail_string), MfaDetail_dynamic)
+// Project useful information for investigation and analysis
+| project TimeGenerated, UserPrincipalName, AuthenticationRequirement, MfaDetail.authMethod, IsInteractive, ResultType, IPAddress, LocationDetails.countryOrRegion, LocationDetails.city, AppDisplayName, DeviceDetail.operatingSystem, ClientAppUsed, DeviceDetail.browser, UserAgent
+| sort by TimeGenerated desc

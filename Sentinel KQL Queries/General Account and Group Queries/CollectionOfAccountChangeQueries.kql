@@ -1,0 +1,39 @@
+ACCOUNT LOCKED-OUT:
+SecurityEvent
+| where EventID == 4740
+| where TargetUserName contains "NAME"
+ 
+ACCOUNT PASSWORD CHANGED BY USER:
+SecurityEvent
+| where EventID == '4723'
+ 
+ACCOUNT PASSWORD CHANGED BY ADMIN:
+SecurityEvent
+| where EventID == '4724'
+ 
+ACCOUNT CHANGED:
+SecurityEvent
+| where EventID == '4738'
+ 
+ACCOUNT CREATION:
+SecurityEvent
+| where EventID == 4720
+ 
+ACCOUNT DISABLED:
+SecurityEvent
+| where EventID == 4725
+ 
+COMPUTER OR USER ACCOUNT ENABLED:
+SecurityEvent
+| where EventID == 4722
+| where TargetUserName contains "NAME$"
+ 
+USER ACCOUNT DELETED:
+SecurityEvent
+| where EventID == 4726
+| where TargetUserName contains "NAME"
+ 
+COMPUTER ACCOUNT DELETED:
+SecurityEvent
+| where EventID == 4743
+| where TargetUserName contains "NAME$"
