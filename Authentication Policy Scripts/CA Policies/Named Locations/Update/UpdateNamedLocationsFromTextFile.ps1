@@ -58,7 +58,8 @@ $params = @{
 Connect-MgGraph -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
 
 # Imports the Module
-Import-Module Microsoft.Graph.Identity.ConditionalAccess
+# Appears to not be needed
+# Import-Module Microsoft.Graph.Identity.ConditionalAccess
 
 # Change $blockedVPNsId to $NamedLocationID if you have gone with Option 1 Above
 # Update the Named Location

@@ -38,7 +38,8 @@ $params = @{
 Connect-MgGraph -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
 
 # Imports the Module
-Import-Module Microsoft.Graph.Identity.ConditionalAccess
+# Appears to not be needed
+# Import-Module Microsoft.Graph.Identity.ConditionalAccess
 
 # Update the Named Location
 New-MgIdentityConditionalAccessNamedLocation -BodyParameter $params
