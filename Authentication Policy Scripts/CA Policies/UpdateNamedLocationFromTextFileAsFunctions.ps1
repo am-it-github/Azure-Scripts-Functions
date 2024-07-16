@@ -48,6 +48,8 @@ function Update-NamedLocation {
     
     # Update the Named Location
     # In order for this to work you must connect to MgGraph with "Connect-MgGraph -TenantID "YOUR-TENANT-ID" -Scopes Policy.ReadWrite.ConditionalAccess"
+    # Imports the Module
+    Import-Module Microsoft.Graph.Identity.ConditionalAccess
     Update-MgIdentityConditionalAccessNamedLocation -NamedLocationId $namedLocationId -BodyParameter $params
 }
 
