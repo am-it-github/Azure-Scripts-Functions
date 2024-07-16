@@ -6,8 +6,11 @@ Invoke-WebRequest -Uri https://raw.githubusercontent.com/X4BNet/lists_vpn/main/o
 # Read IP addresses from the file "ipv4.txt"
 $IPScopes = Get-Content -Path "ipv4.txt"
 # Declares the Named Location ID for use in the Update cmdlet later
-$NamedLocationID = "Insert the NamedLocation ID" #To get this, run "get-MgIdentityConditionalAccessNamedLocation"
-
+# YOU CAN MANUALLY DO THIS BY UNCOMMENTING THE BELOW
+# $NamedLocationID = "YOUR ID" #To get this, run "get-MgIdentityConditionalAccessNamedLocation"
+# Get the named location and store the Id in a variable
+$namedLocation = Get-MgIdentityConditionalAccessNamedLocation | Where-Object { $_.DisplayName -eq "Blocked VPNs" }
+$blockedVPNsId = $namedLocation.Id
 
 # Initialize the ipRanges array
 $ipRanges = @()
@@ -30,6 +33,6 @@ $params = @{
 
 # Update the Named Location
 # In order for this to work you must connect to MgGraph with "Connect-MgGraph -TenantID "YOUR-TENANT-ID" -Scopes Policy.ReadWrite.ConditionalAccess"
-Update-MgIdentityConditionalAccessNamedLocation -NamedLocationId $NamedLocationID -BodyParameter $params
+Update-MgIdentityConditionalAccessNamedLocation -NamedLocationId $blockedVPNsId -BodyParameter $params
 
 
