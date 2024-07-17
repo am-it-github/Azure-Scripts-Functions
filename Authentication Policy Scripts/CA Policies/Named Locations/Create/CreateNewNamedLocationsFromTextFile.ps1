@@ -52,7 +52,7 @@ $clientID = "YOUR_CLIENT_ID"
 $params = Initialize-IpRangesAndParams -url $url
 
 #Connect to MgGraph with correct Scope
-Connect-MgGraph -NoWelcome -ClientId $clientId -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
+Connect-MgGraph -NoWelcome -ClientId $clientID -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
 
 # Update the Named Location
 New-MgIdentityConditionalAccessNamedLocation -BodyParameter $params
