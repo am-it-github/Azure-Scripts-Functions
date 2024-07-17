@@ -43,7 +43,7 @@ function Get-NamedLocationId {
     )
 
     # Connect to MgGraph with correct Scope
-    Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
+    Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 
     # Get the named location for locations matching the given display name
     $namedLocation = Get-MgIdentityConditionalAccessNamedLocation | Where-Object { $_.DisplayName -eq $displayName }
@@ -79,7 +79,7 @@ if (-not $NamedLocationID) {
 $params = Initialize-IpRangesAndParams -url $url
 
 # Connect to MgGraph with correct Scope
-Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
+Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 
 # Update the Named Location
 Update-MgIdentityConditionalAccessNamedLocation -NamedLocationId $NamedLocationID -BodyParameter $params

@@ -50,7 +50,7 @@ $tenantID = "YOUR_TENANT_ID"
 $params = Initialize-IpRangesAndParams -url $url
 
 #Connect to MgGraph with correct Scope
-Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
+Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 
 # Update the Named Location
 New-MgIdentityConditionalAccessNamedLocation -BodyParameter $params
