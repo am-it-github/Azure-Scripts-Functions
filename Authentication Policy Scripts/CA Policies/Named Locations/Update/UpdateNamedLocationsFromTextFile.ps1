@@ -64,7 +64,7 @@ $clientID = "YOUR_CLIENT_ID"
 
 ###### OPTION 1 (DEFAULT) - Automatically get the NamedLocationID for policy matching Display Name "Blocked VPNs" using Function "Get-NamedLocationId" #####
 # Uncomment the next line to use Option 1
-$NamedLocationID = (Get-NamedLocationId -displayName "Blocked VPNs" -clientId $clientId -tenantID $tenantID).Id
+$NamedLocationID = (Get-NamedLocationId -displayName "Blocked VPNs" -clientID $clientId -tenantID $tenantID).Id
 
 ###### OPTION 2 -  Manually Declare the Named Location ID you wish to Update #####
 # Uncomment the next line to use Option 2
