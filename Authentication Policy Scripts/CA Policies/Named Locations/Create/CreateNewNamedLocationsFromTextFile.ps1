@@ -5,7 +5,7 @@ function Initialize-IpRangesAndParams {
     )
 
     # File path for the downloaded IP addresses file
-    $filePath = ".\ipv4.txt"
+    $filePath = "ipv4.txt"
 
     # Download the required file from the URL
    Invoke-WebRequest -Uri $url -OutFile $filePath
