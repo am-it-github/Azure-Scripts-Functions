@@ -43,8 +43,6 @@ $url = "https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.
 # Declares the ID of the tenant you want to connect to
 $tenantID = "YOUR_TENANT_ID"
 
-# Declares the ClientID of the Managed ID you want to connect with
-$clientID = "YOUR_CLIENT_ID"
 ####### END OF VARIABLES TABLE #######
 
 
@@ -52,7 +50,7 @@ $clientID = "YOUR_CLIENT_ID"
 $params = Initialize-IpRangesAndParams -url $url
 
 #Connect to MgGraph with correct Scope
-Connect-MgGraph -NoWelcome -ClientId $clientID -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
+Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
 
 # Update the Named Location
 New-MgIdentityConditionalAccessNamedLocation -BodyParameter $params

@@ -39,12 +39,11 @@ function Initialize-IpRangesAndParams {
 function Get-NamedLocationId {
     param (
         [string]$displayName,
-        [string]$tenantID,
-        [string]$clientID
+        [string]$tenantID
     )
 
     # Connect to MgGraph with correct Scope
-    Connect-MgGraph -NoWelcome -ClientId $clientId -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
+    Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
 
     # Get the named location for locations matching the given display name
     $namedLocation = Get-MgIdentityConditionalAccessNamedLocation | Where-Object { $_.DisplayName -eq $displayName }
@@ -59,12 +58,10 @@ $url = "https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.
 # Declares the ID of the tenant you want to connect to
 $tenantID = "YOUR_TENANT_ID"
 
-# Declares the ClientID of the Managed ID you want to connect with
-$clientID = "YOUR_CLIENT_ID"
 
 ###### OPTION 1 (DEFAULT) - Automatically get the NamedLocationID for policy matching Display Name "Blocked VPNs" using Function "Get-NamedLocationId" #####
 # Uncomment the next line to use Option 1
-$NamedLocationID = (Get-NamedLocationId -displayName "Blocked VPNs" -clientID $clientId -tenantID $tenantID).Id
+$NamedLocationID = (Get-NamedLocationId -displayName "Blocked VPNs" -tenantID $tenantID).Id
 
 ###### OPTION 2 -  Manually Declare the Named Location ID you wish to Update #####
 # Uncomment the next line to use Option 2
@@ -82,7 +79,7 @@ if (-not $NamedLocationID) {
 $params = Initialize-IpRangesAndParams -url $url
 
 # Connect to MgGraph with correct Scope
-Connect-MgGraph -NoWelcome -ClientId $clientId -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
+Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess
 
 # Update the Named Location
 Update-MgIdentityConditionalAccessNamedLocation -NamedLocationId $NamedLocationID -BodyParameter $params
