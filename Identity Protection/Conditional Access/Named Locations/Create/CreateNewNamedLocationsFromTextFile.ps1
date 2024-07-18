@@ -53,9 +53,15 @@ function Connect-MgGraphFunction {
     )
 
     # Check if already connected to MgGraph
-    if (-not (Get-MgGraphConnectionInfo)) {
-        Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+    $currentConnectionInfo = Get-MgGraphConnectionInfo
+    if ($currentConnectionInfo) {
+        if ($currentConnectionInfo.TenantId -ne $TenantID) {
+            Disconnect-MgGraph
+        } else {
+            return
+        }
     }
+    Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 }
 
 ####### END OF FUNCTIONS BLOCK #######

@@ -36,16 +36,22 @@ function Initialize-IpRangesAndParamsFunction {
 
     return $params
 }
-
+# Function to connect to MgGraph with only TenantID as a parameter
 function Connect-MgGraphFunction {
     param (
         [string]$TenantID
     )
 
     # Check if already connected to MgGraph
-    if (-not (Get-MgGraphConnectionInfo)) {
-        Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+    $currentConnectionInfo = Get-MgGraphConnectionInfo
+    if ($currentConnectionInfo) {
+        if ($currentConnectionInfo.TenantId -ne $TenantID) {
+            Disconnect-MgGraph
+        } else {
+            return
+        }
     }
+    Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 }
 
 # Function to get the Named Location ID for a given display name

@@ -46,14 +46,21 @@ function Connect-MgGraphFunction {
     )
 
     # Check if already connected to MgGraph
-    if (-not (Get-MgGraphConnectionInfo)) {
-        Write-Host -ForegroundColor Cyan "Connecting to MgGraph..."
-        Write-Host -ForegroundColor Red "If Prompted, sign into MgGraph with an account that has permissions to change CA Policies"
-        Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
-        Write-Host -ForegroundColor Green "Done"
-    } else {
-        Write-Host -ForegroundColor Green "Already connected to MgGraph."
+    $currentConnectionInfo = Get-MgGraphConnectionInfo
+    if ($currentConnectionInfo) {
+        if ($currentConnectionInfo.TenantId -ne $TenantID) {
+            Write-Warning "Already connected to MgGraph with a different TenantID: $($currentConnectionInfo.TenantId)"
+            Write-Warning "Disconnecting from Incorrect TenantID"
+            Disconnect-MgGraph
+        } else {
+            Write-Output "Already connected to MgGraph with TenantID: $TenantID"
+            return
+        }
     }
+
+    Write-Output "Connecting to MgGraph with TenantID: $TenantID..."
+    Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+    Write-Output "Connected to MgGraph with TenantID: $TenantID"
 }
 
 # Function to get the Named Location ID for a given display name
