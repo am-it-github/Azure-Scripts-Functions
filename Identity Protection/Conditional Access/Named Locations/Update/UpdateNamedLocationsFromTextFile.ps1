@@ -37,28 +37,12 @@ function Initialize-IpRangesAndParamsFunction {
     return $params
 }
 # Function to connect to MgGraph with only TenantID as a parameter
+
 function Connect-MgGraphFunction {
     param (
         [string]$TenantID
     )
-
-    # Check if a global variable to track connection exists
-    if ($global:ConnectedToMgGraph -and $global:ConnectedToMgGraph.TenantId -eq $TenantID) {
-        return
-    }
-
-    # Disconnect if already connected but to a different tenant ID
-    if ($global:ConnectedToMgGraph -and $global:ConnectedToMgGraph.TenantId -ne $TenantID) {
-        Disconnect-MgGraph
-    }
-
-    # Connect to MgGraph
     Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
-
-    # Set global variable to track connection
-    $global:ConnectedToMgGraph = @{
-        TenantId = $TenantID
-    }
 }
 
 # Function to get the Named Location ID for a given display name

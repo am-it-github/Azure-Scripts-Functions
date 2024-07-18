@@ -46,27 +46,13 @@ function Connect-MgGraphFunction {
         [string]$TenantID
     )
 
-    # Check if a global variable to track connection exists
-    if ($global:ConnectedToMgGraph -and $global:ConnectedToMgGraph.TenantId -eq $TenantID) {
-        return
-    }
-
-    # Disconnect if already connected but to a different tenant ID
-    if ($global:ConnectedToMgGraph -and $global:ConnectedToMgGraph.TenantId -ne $TenantID) {
-        Write-Host -ForegroundColor Red "Existing Connection to Mismatched Tenant ID - Disonnnecting...."
-        Disconnect-MgGraph
-    }
-
-    # Connect to MgGraph
-    Write-Output "Connecting to MgGraph..."
-    Write-Output "If prompted, sign into MgGraph with an account that has permissions to change CA Policies"
+    Write-Host -ForegroundColor Cyan "Connecting to $TenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All""..."
+    Write-Host -ForegroundColor Red "If Prompted, enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
     Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
-
-    # Set global variable to track connection
-    $global:ConnectedToMgGraph = @{
-        TenantId = $TenantID
-    }
 }
+
+
+
 
 ####### END OF FUNCTIONS BLOCK #######
 
