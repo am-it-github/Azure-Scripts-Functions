@@ -8,7 +8,7 @@
 # FUNCTION Initialize-IpRangesAndParams
 
 
-
+####### START OF FUNCTIONS BLOCK #######
 # Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
 function Initialize-IpRangesAndParams {
     param (
@@ -61,7 +61,7 @@ function Get-NamedLocationId {
     # Extract the ID from the above variable
     return $namedLocation
 }
-
+####### END OF FUNCTIONS BLOCK #######
 ####### START OF VARIABLES TABLE #######
 # URL for the IP addresses file that is passed into the Function "Initialize-IpRangesAndParams" when called later
 $url = "https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.txt"
@@ -73,13 +73,14 @@ $tenantID = "YOUR_TENANT_ID"
 ###### OPTION 1 (DEFAULT) - Automatically get the NamedLocationID for policy matching Display Name "Blocked VPNs" using Function "Get-NamedLocationId" #####
 # Uncomment the next line to use Option 1
 $NamedLocationID = (Get-NamedLocationId -displayName "Blocked VPNs" -tenantID $tenantID).Id
-
+####### END OF OPTION 1 #######
 ###### OPTION 2 -  Manually Declare the Named Location ID you wish to Update #####
 # Uncomment the next line to use Option 2
 # $NamedLocationID = "YOUR ID" # To get this, run "get-MgIdentityConditionalAccessNamedLocation"
-
+####### END OF OPTION 2 #######
 ####### END OF VARIABLES TABLE #######
 
+####### START OF SCRIPT BLOCK #######
 # Ensure $NamedLocationID is set
 if (-not $NamedLocationID) {
     Write-Error "NamedLocationID is not set. Please ensure you have set it using Option 1 or Option 2."
@@ -97,3 +98,4 @@ Update-MgIdentityConditionalAccessNamedLocation -NamedLocationId $NamedLocationI
 
 # Disconnects MgGraph
 Disconnect-MgGraph
+####### START OF SCRIPT BLOCK #######

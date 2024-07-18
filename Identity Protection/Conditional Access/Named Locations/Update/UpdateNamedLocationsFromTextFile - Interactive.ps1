@@ -5,7 +5,7 @@
 # THE SCRIPT WILL PROMPT FOR ALL VARIABLES REQUIRED TO ACHIEVE THE DESIRED RESULT
 
 
-
+####### START OF FUNCTIONS BLOCK #######
 #Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
 function Initialize-IpRangesAndParams {
     param (
@@ -57,12 +57,13 @@ function Get-NamedLocationId {
     # Extract the ID from the above variable
     return $namedLocation
 }
-
+####### END OF FUNCTIONS BLOCK #######
+####### START OF PRE-SCRIPT BLOCK #######
 Write-Host -ForegroundColor Red "THE PURPOSE OF THIS SCRIPT IS TO UPDATE NAMED IP LOCATION IN AZURE POPULATED FROM A PLAINTEXT LIST OF IPV4 ADDRESSES IN CIDR FORMAT"
 Write-Host -ForegroundColor Red "THIS IS THE INTERACTIVE VERSION OF THE SCRIPT INTENDED TO BE RAN MANUALLY BY AN ADMIN USER"
 Write-Host -ForegroundColor Red "BEFORE CONTINUING, YOU WILL NEED TO KNOW THE TENANT ID OF THE AZURE ENVIRONMENT YOU WISH TO CONNECT TO AND THE DISPLAY NAME OF THE NAMED LOCATION YOU WISH TO UPDATE"
 Read-Host "PRESS ENTER WHEN YOU ARE READY TO CONTINUE..."
-
+####### END OF PRE-SCRIPT BLOCK #######
 
 
 ####### START OF VARIABLES TABLE #######
@@ -72,20 +73,19 @@ $tenantID = Read-Host "Enter the tenant ID you want to Connect to"
 # File path for the downloaded IP addresses file
 Write-Host -ForegroundColor Cyan "Example of expected path ""C:\users\My OneDrive\Documents\ipv4.txt"
 $filePath = Read-Host "Enter the full file path to the ipv4 txt document you want to use. Ensure the filename is included"
-####### END OF VARIABLES TABLE #######
-
 
 ###### OPTION 1 (DEFAULT) - Automatically get the NamedLocationID for policy matching Display Name "Blocked VPNs" using Function "Get-NamedLocationId" #####
 # Uncomment the next line to use Option 1
 $NamedLocationDisplayName = Read-Host "Enter The Display Name of the Named Location you wish to Update"
 $NamedLocationID = (Get-NamedLocationId -displayName $NamedLocationDisplayName -tenantID $tenantID).Id
-
+###### END OF OPTION 1 ######
 ###### OPTION 2 -  Manually Declare the Named Location ID you wish to Update #####
 # Uncomment the next line to use Option 2
 # $NamedLocationID = Read-Host "Enter the NamedLocationID of the Named Location you wish to Update"
-
+###### END OF OPTION 2 ######
 ####### END OF VARIABLES TABLE #######
 
+####### START OF SCRIPT BLOCK #######
 # Ensure $NamedLocationID is set
 Write-Host -ForegroundColor Cyan "Confirming Named Location ID is populated..."
 if (-not $NamedLocationID) {
@@ -120,3 +120,4 @@ if ($stayConnected -eq "N") {
 } else {
     Write-Host -ForegroundColor Green "You are still connected to MgGraph"
 }
+####### END OF SCRIPT BLOCK #######

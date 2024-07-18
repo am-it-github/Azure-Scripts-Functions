@@ -7,7 +7,7 @@
 # IF YOU WISH TO CHANGE THE DISPLAY NAME OF THE CREATED POLICY - ENSURE THE displayName = IS CHANGED IN THE Construct the final $params hashtable WITHIN 
 # FUNCTION Initialize-IpRangesAndParams
 
-
+####### START OF FUNCTIONS BLOCK #######
 #Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
 function Initialize-IpRangesAndParams {
     param (
@@ -44,7 +44,7 @@ function Initialize-IpRangesAndParams {
 
     return $params
 }
-
+####### START OF FUNCTIONS BLOCK #######
 
 ####### START OF VARIABLES TABLE #######
 # URL for the IP addresses file that is passed into the Function "Initialize-IpRangesAndParams" when called later
@@ -55,7 +55,7 @@ $tenantID = "YOUR_TENANT_ID"
 
 ####### END OF VARIABLES TABLE #######
 
-
+####### START OF SCRIPT BLOCK #######
 # Call the function to initialize ipRanges and construct params once
 $params = Initialize-IpRangesAndParams -url $url
 
@@ -67,3 +67,4 @@ New-MgIdentityConditionalAccessNamedLocation -BodyParameter $params
 
 # Disconnects MgGraph
 Disconnect-MgGraph
+####### END OF SCRIPT BLOCK #######

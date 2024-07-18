@@ -6,7 +6,7 @@
 
 
 
-
+####### START OF FUNCTIONS BLOCK #######
 #Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
 function Initialize-IpRangesAndParams {
     param (
@@ -38,12 +38,15 @@ function Initialize-IpRangesAndParams {
 
     return $params
 }
+####### END OF FUNCTIONS BLOCK #######
 
-
+####### START OF PRE-SCRIPT BLOCK #######
 Write-Host -ForegroundColor Red "THE PURPOSE OF THIS SCRIPT IS TO CREATE A NEW NAMED IP LOCATION IN AZURE POPULATED FROM A PLAINTEXT LIST OF IPV4 ADDRESSES IN CIDR FORMAT"
 Write-Host -ForegroundColor Red "THIS IS THE INTERACTIVE VERSION OF THE SCRIPT INTENDED TO BE RAN MANUALLY BY AN ADMIN USER"
 Write-Host -ForegroundColor Red "BEFORE CONTINUING, YOU WILL NEED TO KNOW THE TENANT ID OF THE AZURE ENVIRONMENT YOU WISH TO CONNECT TO AND THE DISPLAY NAME YOU WANT TO SET FOR YOUR NEW NAMED LOCATION"
 Read-Host "PRESS ENTER WHEN YOU ARE READY TO CONTINUE..."
+####### END OF PRE-SCRIPT BLOCK #######
+
 
 ####### START OF VARIABLES TABLE #######
 # Declares the ID of the tenant you want to connect to
@@ -52,11 +55,9 @@ $tenantID = Read-Host "Enter the tenant ID you want to Connect to"
 # File path for the downloaded IP addresses file
 Write-Host -ForegroundColor Cyan "Example of expected path ""C:\users\My OneDrive\Documents\ipv4.txt"
 $filePath = Read-Host "Enter the full file path to the ipv4 txt document you want to use. Ensure the filename is included"
-
-
 ####### END OF VARIABLES TABLE #######
 
-
+####### START OF SCRIPT BLOCK #######
 # Call the function to initialize ipRanges and construct params once
 Write-Host -ForegroundColor Cyan "Generating Parameter Variable from txt file $filePath..."
 $params = Initialize-IpRangesAndParams -filePath $filePath
@@ -83,3 +84,4 @@ if ($stayConnected -eq "N") {
 } else {
     Write-Host -ForegroundColor Green "You are still connected to MgGraph"
 }
+####### END OF SCRIPT #######
