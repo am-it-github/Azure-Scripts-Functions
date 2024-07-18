@@ -40,27 +40,32 @@ function Initialize-IpRangesAndParamsFunction {
 }
 
 # Function to connect to MgGraph with only TenantID as a parameter
+# Function to connect to MgGraph with only TenantID as a parameter
 function Connect-MgGraphFunction {
     param (
         [string]$TenantID
     )
 
-    # Check if already connected to MgGraph
-    $currentConnectionInfo = Get-MgGraphConnectionInfo
-    if ($currentConnectionInfo) {
-        if ($currentConnectionInfo.TenantId -ne $TenantID) {
-            Write-Warning "Already connected to MgGraph with a different TenantID: $($currentConnectionInfo.TenantId)"
-            Write-Warning "Disconnecting from Incorrect TenantID"
-            Disconnect-MgGraph
-        } else {
-            Write-Output "Already connected to MgGraph with TenantID: $TenantID"
-            return
-        }
+    # Check if a global variable to track connection exists
+    if ($global:ConnectedToMgGraph -and $global:ConnectedToMgGraph.TenantId -eq $TenantID) {
+        return
     }
 
-    Write-Output "Connecting to MgGraph with TenantID: $TenantID..."
+    # Disconnect if already connected but to a different tenant ID
+    if ($global:ConnectedToMgGraph -and $global:ConnectedToMgGraph.TenantId -ne $TenantID) {
+        Write-Host -ForegroundColor Red "Existing Connection to Mismatched Tenant ID - Disonnnecting...."
+        Disconnect-MgGraph
+    }
+
+    # Connect to MgGraph
+    Write-Output "Connecting to MgGraph..."
+    Write-Output "If prompted, sign into MgGraph with an account that has permissions to change CA Policies"
     Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
-    Write-Output "Connected to MgGraph with TenantID: $TenantID"
+
+    # Set global variable to track connection
+    $global:ConnectedToMgGraph = @{
+        TenantId = $TenantID
+    }
 }
 
 # Function to get the Named Location ID for a given display name
