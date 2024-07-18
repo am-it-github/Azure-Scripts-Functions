@@ -12,7 +12,8 @@ function Initialize-IpRangesAndParams {
 
 
     # File path for the downloaded IP addresses file
-    $filePath = Read-Host "Enter the full file path to the ipv4 txt document you want to use"
+    Write-Host -ForegroundColor Cyan "Example of expected path ""C:\users\My OneDrive\Documents\ipv4.txt"
+    $filePath = Read-Host "Enter the full file path to the ipv4 txt document you want to use. Ensure the filename is included"
 
     # Read IP addresses from the file
     $IPScopes = Get-Content -Path $filePath
