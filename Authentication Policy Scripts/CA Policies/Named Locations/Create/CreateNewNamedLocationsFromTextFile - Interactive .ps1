@@ -68,3 +68,14 @@ Write-Host -ForegroundColor Green "Done"
 Write-Host -ForegroundColor Cyan "Creating new Named Location"
 New-MgIdentityConditionalAccessNamedLocation -BodyParameter $params
 Write-Host -ForegroundColor Green "Done"
+
+# Ask the user if they want to stay connected to MgGraph
+$stayConnected = Read-Host "Do you want to stay connected to MgGraph? (Y/N)"
+
+if ($stayConnected -eq "N") {
+    Write-Host -ForegroundColor Cyan "Disconnecting from MgGraph..."
+    Disconnect-MgGraph
+    Write-Host -ForegroundColor Green "Disconnected from MgGraph"
+} else {
+    Write-Host -ForegroundColor Green "You are still connected to MgGraph"
+}

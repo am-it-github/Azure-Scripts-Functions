@@ -94,3 +94,6 @@ Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.Conditio
 
 # Update the Named Location
 Update-MgIdentityConditionalAccessNamedLocation -NamedLocationId $NamedLocationID -BodyParameter $params
+
+# Disconnects MgGraph
+Disconnect-MgGraph
