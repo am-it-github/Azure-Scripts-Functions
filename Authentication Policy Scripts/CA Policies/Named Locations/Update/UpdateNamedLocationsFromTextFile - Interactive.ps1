@@ -8,11 +8,9 @@
 
 #Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
 function Initialize-IpRangesAndParams {
-
-
-    # File path for the downloaded IP addresses file
-    Write-Host -ForegroundColor Cyan "Example of expected path ""C:\users\My OneDrive\Documents\ipv4.txt"
-    $filePath = Read-Host "Enter the full file path to the ipv4 txt document you want to use. Ensure the filename is included"
+    param (
+        [string]$filePath
+    )
 
     # Read IP addresses from the file
     $IPScopes = Get-Content -Path $filePath
@@ -37,7 +35,6 @@ function Initialize-IpRangesAndParams {
     }
 
     return $params
-    return $filePath
 }
 
 # Function to get the Named Location ID for a given display name
@@ -68,6 +65,10 @@ Read-Host "Press Enter when you are ready to continue..."
 ####### START OF VARIABLES TABLE #######
 # Declares the ID of the tenant you want to connect to
 $tenantID = Read-Host "Enter the tenant ID you want to Connect to"
+
+# File path for the downloaded IP addresses file
+Write-Host -ForegroundColor Cyan "Example of expected path ""C:\users\My OneDrive\Documents\ipv4.txt"
+$filePath = Read-Host "Enter the full file path to the ipv4 txt document you want to use. Ensure the filename is included"
 ####### END OF VARIABLES TABLE #######
 
 
@@ -94,7 +95,7 @@ Write-Host -ForegroundColor Green "Done"
 
 # Call the function to initialize ipRanges and construct params once
 Write-Host -ForegroundColor Cyan "Generating Parameter Variable from txt file $filePath..."
-$params = Initialize-IpRangesAndParams
+$params = Initialize-IpRangesAndParams -filePath $filePath
 Write-Host -ForegroundColor Green "Done"
 
 #Connect to MgGraph with correct Scope
