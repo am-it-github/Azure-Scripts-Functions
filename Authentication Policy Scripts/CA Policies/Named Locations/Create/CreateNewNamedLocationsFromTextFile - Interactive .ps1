@@ -66,7 +66,7 @@ Write-Host -ForegroundColor Green "Done"
 
 #Connect to MgGraph with correct Scope
 Write-Host -ForegroundColor Cyan "Connecting to $tenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All""..."
-Write-Host -ForegroundColor Cyan "Enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
+Write-Host -ForegroundColor Red "If Prompted, enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
 Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 Write-Host -ForegroundColor Green "Done"
 

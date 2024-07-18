@@ -45,10 +45,15 @@ function Get-NamedLocationId {
     )
 
     # Connect to MgGraph with correct Scope
+    Write-Host -ForegroundColor Cyan "Connecting to $tenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All""..."
+    Write-Host -ForegroundColor Red "If Prompted, enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
     Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+    Write-Host -ForegroundColor Green "Done"
 
     # Get the named location for locations matching the given display name
+    Write-Host -ForegroundColor Cyan "Getting the Named Location ID for Named Location $NamedLocationDisplayName..."
     $namedLocation = Get-MgIdentityConditionalAccessNamedLocation | Where-Object { $_.DisplayName -eq $displayName }
+    Write-Host -ForegroundColor Green "Done"
     # Extract the ID from the above variable
     return $namedLocation
 }
@@ -75,9 +80,7 @@ $filePath = Read-Host "Enter the full file path to the ipv4 txt document you wan
 ###### OPTION 1 (DEFAULT) - Automatically get the NamedLocationID for policy matching Display Name "Blocked VPNs" using Function "Get-NamedLocationId" #####
 # Uncomment the next line to use Option 1
 $NamedLocationDisplayName = Read-Host "Enter The Display Name of the Named Location you wish to Update"
-Write-Host -ForegroundColor Cyan "Getting the Named Location ID for Named Location $NamedLocationDisplayName..."
 $NamedLocationID = (Get-NamedLocationId -displayName $NamedLocationDisplayName -tenantID $tenantID).Id
-Write-Host -ForegroundColor Green "Done"
 
 ###### OPTION 2 -  Manually Declare the Named Location ID you wish to Update #####
 # Uncomment the next line to use Option 2
@@ -100,7 +103,7 @@ Write-Host -ForegroundColor Green "Done"
 
 #Connect to MgGraph with correct Scope
 Write-Host -ForegroundColor Cyan "Connecting to $tenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All""..."
-Write-Host -ForegroundColor Cyan "Enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
+Write-Host -ForegroundColor Red "If Prompted, enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
 Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 Write-Host -ForegroundColor Green "Done"
 
