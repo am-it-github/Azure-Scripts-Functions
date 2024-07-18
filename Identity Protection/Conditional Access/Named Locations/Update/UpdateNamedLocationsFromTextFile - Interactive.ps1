@@ -1,10 +1,8 @@
-# THE PURPOSE OF THIS SCRIPT IS TO CREATE A NEW NAMED IP LOCATION IN AZURE POPULATED FROM A PLAINTEXT LIST OF 
+# THE PURPOSE OF THIS SCRIPT IS TO CREATE A UPDATE A NAMED IP LOCATION IN AZURE POPULATED FROM A PLAINTEXT LIST OF 
 # IPV4 ADDRESSES IN CIDR FORMAT
 
 # THIS IS THE INTERACTIVE VERSION OF THE SCRIPT INTENDED TO BE RAN MANUALLY BY AN ADMIN USER
 # THE SCRIPT WILL PROMPT FOR ALL VARIABLES REQUIRED TO ACHIEVE THE DESIRED RESULT
-
-
 
 ####### START OF FUNCTIONS BLOCK #######
 
@@ -31,7 +29,7 @@ function Initialize-IpRangesAndParamsFunction {
     ## Construct the final $params hashtable, using the ip ranges array from above
     $params = @{
         "@odata.type" = "#microsoft.graph.ipNamedLocation"
-        displayName = "Blocked VPNs"
+        displayName = $NamedLocationDisplayName
         isTrusted = $false
         ipRanges = $ipRanges
     }
@@ -44,10 +42,10 @@ function Connect-MgGraphFunction {
     param (
         [string]$TenantID
     )
-    Write-Host -ForegroundColor Cyan "Connecting to MgGraph..."
-    Write-Host -ForegroundColor Red "If Prompted, sign into MgGraph with an account that has permissions to change CA Policies"
+    
+    Write-Host -ForegroundColor Cyan "Connecting to $TenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All""..."
+    Write-Host -ForegroundColor Red "If Prompted, enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
     Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
-    Write-Host -ForegroundColor Green "Done"
 }
 
 # Function to get the Named Location ID for a given display name
@@ -77,7 +75,6 @@ Write-Host -ForegroundColor Red "THIS IS THE INTERACTIVE VERSION OF THE SCRIPT I
 Write-Host -ForegroundColor Red "BEFORE CONTINUING, YOU WILL NEED TO KNOW THE TENANT ID OF THE AZURE ENVIRONMENT YOU WISH TO CONNECT TO AND THE DISPLAY NAME OF THE NAMED LOCATION YOU WISH TO UPDATE"
 Read-Host "PRESS ENTER WHEN YOU ARE READY TO CONTINUE..."
 ####### END OF PRE-SCRIPT BLOCK #######
-
 
 ####### START OF VARIABLES TABLE #######
 # Declares the ID of the tenant you want to connect to

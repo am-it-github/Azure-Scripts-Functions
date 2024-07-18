@@ -4,15 +4,15 @@
 # THIS IS THE AUTOMATED VERSION OF THE SCRIPT.
 # YOU MUST SET THE TENANT_ID AND ENSURE THE IPV4 DOCUMENT IS DOWNLOADED TO THE SAME DIRECTORY THIS SCRIPT IS EXECUTED FROM
 # IF YOU WISH TO UPDATE THE URL USED FOR THE IPV4 DOCUMENT, ENSURE THE URL IS CHANGED
-# IF YOU WISH TO CHANGE THE DISPLAY NAME OF THE CREATED POLICY - ENSURE THE displayName = IS CHANGED IN THE Construct the final $params hashtable WITHIN 
-# FUNCTION Initialize-IpRangesAndParams
+# IF YOU WISH TO CHANGE THE DISPLAY NAME OF THE CREATED POLICY - ENSURE THE $NamedLocationDisplayName IS CHANGED IN THE
 
 ####### START OF FUNCTIONS BLOCK #######
 
 # Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
 function Initialize-IpRangesAndParamsFunction {
     param (
-        [string]$url
+        [string]$url,
+        [string]$displayName
     )
 
     # File path for the downloaded IP addresses file
@@ -38,7 +38,7 @@ function Initialize-IpRangesAndParamsFunction {
     ## Construct the final $params hashtable, using the ip ranges array from above
     $params = @{
         "@odata.type" = "#microsoft.graph.ipNamedLocation"
-        displayName = "Blocked VPNs"
+        displayName = $displayName
         isTrusted = $false
         ipRanges = $ipRanges
     }
@@ -51,9 +51,9 @@ function Connect-MgGraphFunction {
     param (
         [string]$TenantID
     )
-
     Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 }
+
 
 ####### END OF FUNCTIONS BLOCK #######
 
@@ -63,11 +63,15 @@ $url = "https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.
 
 # Declares the ID of the tenant you want to connect to
 $tenantID = "YOUR_TENANT_ID"
+
+#Declare the Display Name of the Created policy
+$NamedLocationDisplayName = "YOUR NAMED POLICY DISPLAY NAME"
+
 ####### END OF VARIABLES TABLE #######
 
 ####### START OF SCRIPT BLOCK #######
 # Call the function to initialize ipRanges and construct params once
-$params = Initialize-IpRangesAndParamsFunction -url $url
+$params = Initialize-IpRangesAndParamsFunction -displayName $NamedLocationDisplayName -url $url
 
 # Connect to MgGraph with correct Scope using the simplified function
 Connect-MgGraphFunction -TenantID $tenantID

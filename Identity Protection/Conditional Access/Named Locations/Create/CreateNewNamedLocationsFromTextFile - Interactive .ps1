@@ -50,6 +50,8 @@ function Connect-MgGraphFunction {
     Write-Host -ForegroundColor Red "If Prompted, enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
     Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 }
+
+
 ####### END OF FUNCTIONS BLOCK #######
 
 ####### START OF PRE-SCRIPT BLOCK #######
