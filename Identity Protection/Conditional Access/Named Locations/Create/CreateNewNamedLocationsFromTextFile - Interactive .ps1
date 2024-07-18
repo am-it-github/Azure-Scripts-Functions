@@ -52,8 +52,6 @@ function Connect-MgGraphFunction {
 }
 
 
-
-
 ####### END OF FUNCTIONS BLOCK #######
 
 ####### START OF PRE-SCRIPT BLOCK #######

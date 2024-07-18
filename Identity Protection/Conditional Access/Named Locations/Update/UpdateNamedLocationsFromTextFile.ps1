@@ -1,9 +1,20 @@
+# THE PURPOSE OF THIS SCRIPT IS TO UPDATE A NAMED IP LOCATION IN AZURE CONDITIONAL ACCESS POPULATED FROM A PLAINTEXT LIST OF
+# IPV4 ADDRESSES IN CIDR FORMAT
+
+# THIS IS THE AUTOMATED VERSION OF THE SCRIPT.
+# YOU MUST SET THE TENANT_ID AND ENSURE THE IPV4 DOCUMENT IS DOWNLOADED TO THE SAME DIRECTORY THIS SCRIPT IS EXECUTED FROM
+# IF YOU WISH TO UPDATE THE URL USED FOR THE IPV4 DOCUMENT, ENSURE THE URL IS CHANGED
+# IF YOU WISH TO CHANGE THE DISPLAY NAME OF THE CREATED POLICY - ENSURE THE $NamedLocationDisplayName IS CHANGED IN THE
+
+####### START OF FUNCTIONS BLOCK #######
+
 ####### START OF FUNCTIONS BLOCK #######
 
 # Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
 function Initialize-IpRangesAndParamsFunction {
     param (
-        [string]$url
+        [string]$url,
+        [string]$displayName
     )
 
     # File path for the downloaded IP addresses file
@@ -29,7 +40,7 @@ function Initialize-IpRangesAndParamsFunction {
     ## Construct the final $params hashtable, using the ip ranges array from above
     $params = @{
         "@odata.type" = "#microsoft.graph.ipNamedLocation"
-        displayName = "Blocked VPNs"
+        displayName = $NamedLocationDisplayName
         isTrusted = $false
         ipRanges = $ipRanges
     }
@@ -71,6 +82,7 @@ $url = "https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.
 # Declares the ID of the tenant you want to connect to
 $tenantID = Read-Host "Enter the tenant ID you want to Connect to"
 
+
 ###### OPTION 1 (DEFAULT) - Automatically get the NamedLocationID for policy matching Display Name "Blocked VPNs" using Function "Get-NamedLocationId" #####
 # Uncomment the next line to use Option 1
 $NamedLocationDisplayName = "Blocked VPNs"
@@ -90,15 +102,13 @@ if (-not $NamedLocationID) {
 }
 
 # Call the function to initialize ipRanges and construct params once
-$params = Initialize-IpRangesAndParamsFunction -url $url
+$params = Initialize-IpRangesAndParamsFunction -displayName $NamedLocationDisplayName -url $url
 
 # Connect to MgGraph with correct Scope using the simplified function
 Connect-MgGraphFunction -TenantID $tenantID
 
 # Update the Named Location
-Write-Host -ForegroundColor Cyan "Updating Named Location $NamedLocationDisplayName with Location ID $NamedLocationID..."
 Update-MgIdentityConditionalAccessNamedLocation -NamedLocationId $NamedLocationID -BodyParameter $params
-Write-Host -ForegroundColor Green "Done"
 
 # Disconnects MgGraph
 Disconnect-MgGraph
