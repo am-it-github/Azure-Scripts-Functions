@@ -7,11 +7,12 @@
 
 
 ####### START OF FUNCTIONS BLOCK #######
-#Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
-function Initialize-IpRangesAndParams {
+# Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
+function Initialize-IpRangesAndParamsFunction {
     param (
         [string]$filePath
     )
+
     # Read IP addresses from the file
     $IPScopes = Get-Content -Path $filePath
 
@@ -38,6 +39,17 @@ function Initialize-IpRangesAndParams {
 
     return $params
 }
+
+# Function to connect to MgGraph with only TenantID as a parameter
+function Connect-MgGraphFunction {
+    param (
+        [string]$TenantID
+    )
+
+    Write-Host -ForegroundColor Cyan "Connecting to $TenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All""..."
+    Write-Host -ForegroundColor Red "If Prompted, enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
+    Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+}
 ####### END OF FUNCTIONS BLOCK #######
 
 ####### START OF PRE-SCRIPT BLOCK #######
@@ -46,7 +58,6 @@ Write-Host -ForegroundColor Red "THIS IS THE INTERACTIVE VERSION OF THE SCRIPT I
 Write-Host -ForegroundColor Red "BEFORE CONTINUING, YOU WILL NEED TO KNOW THE TENANT ID OF THE AZURE ENVIRONMENT YOU WISH TO CONNECT TO AND THE DISPLAY NAME YOU WANT TO SET FOR YOUR NEW NAMED LOCATION"
 Read-Host "PRESS ENTER WHEN YOU ARE READY TO CONTINUE..."
 ####### END OF PRE-SCRIPT BLOCK #######
-
 
 ####### START OF VARIABLES TABLE #######
 # Declares the ID of the tenant you want to connect to
@@ -60,14 +71,11 @@ $filePath = Read-Host "Enter the full file path to the ipv4 txt document you wan
 ####### START OF SCRIPT BLOCK #######
 # Call the function to initialize ipRanges and construct params once
 Write-Host -ForegroundColor Cyan "Generating Parameter Variable from txt file $filePath..."
-$params = Initialize-IpRangesAndParams -filePath $filePath
+$params = Initialize-IpRangesAndParamsFunction -filePath $filePath
 Write-Host -ForegroundColor Green "Done"
 
-#Connect to MgGraph with correct Scope
-Write-Host -ForegroundColor Cyan "Connecting to $tenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All""..."
-Write-Host -ForegroundColor Red "If Prompted, enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
-Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
-Write-Host -ForegroundColor Green "Done"
+# Connect to MgGraph with correct Scope using the simplified function
+Connect-MgGraphFunction -TenantID $tenantID
 
 # Update the Named Location
 Write-Host -ForegroundColor Cyan "Creating new Named Location..."

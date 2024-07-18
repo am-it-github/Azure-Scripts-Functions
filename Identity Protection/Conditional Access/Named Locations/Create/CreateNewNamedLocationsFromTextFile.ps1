@@ -8,8 +8,9 @@
 # FUNCTION Initialize-IpRangesAndParams
 
 ####### START OF FUNCTIONS BLOCK #######
-#Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
-function Initialize-IpRangesAndParams {
+
+# Function to download the IP file, read IP addresses, initialize the ipRanges array, and construct the params hashtable
+function Initialize-IpRangesAndParamsFunction {
     param (
         [string]$url
     )
@@ -18,7 +19,7 @@ function Initialize-IpRangesAndParams {
     $filePath = "ipv4.txt"
 
     # Download the required file from the URL
-   Invoke-WebRequest -Uri $url -OutFile $filePath
+    Invoke-WebRequest -Uri $url -OutFile $filePath
 
     # Read IP addresses from the file
     $IPScopes = Get-Content -Path $filePath
@@ -44,27 +45,36 @@ function Initialize-IpRangesAndParams {
 
     return $params
 }
-####### START OF FUNCTIONS BLOCK #######
+
+# Function to connect to MgGraph with only TenantID as a parameter
+function Connect-MgGraphFunction {
+    param (
+        [string]$TenantID
+    )
+
+    Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+}
+
+####### END OF FUNCTIONS BLOCK #######
 
 ####### START OF VARIABLES TABLE #######
-# URL for the IP addresses file that is passed into the Function "Initialize-IpRangesAndParams" when called later
+# URL for the IP addresses file that is passed into the Function "Initialize-IpRangesAndParamsFunction" when called later
 $url = "https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/vpn/ipv4.txt"
 
 # Declares the ID of the tenant you want to connect to
 $tenantID = "YOUR_TENANT_ID"
-
 ####### END OF VARIABLES TABLE #######
 
 ####### START OF SCRIPT BLOCK #######
 # Call the function to initialize ipRanges and construct params once
-$params = Initialize-IpRangesAndParams -url $url
+$params = Initialize-IpRangesAndParamsFunction -url $url
 
-#Connect to MgGraph with correct Scope
-Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+# Connect to MgGraph with correct Scope using the simplified function
+Connect-MgGraphFunction -TenantID $tenantID
 
 # Update the Named Location
 New-MgIdentityConditionalAccessNamedLocation -BodyParameter $params
 
-# Disconnects MgGraph
+# Disconnect from MgGraph
 Disconnect-MgGraph
 ####### END OF SCRIPT BLOCK #######
