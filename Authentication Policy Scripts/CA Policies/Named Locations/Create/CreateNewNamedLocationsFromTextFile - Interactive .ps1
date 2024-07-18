@@ -40,13 +40,16 @@ function Initialize-IpRangesAndParams {
     }
 
     return $params
+    return $filePath
 }
 
 
 Write-Host -ForegroundColor Red "THE PURPOSE OF THIS SCRIPT IS TO CREATE A NEW NAMED IP LOCATION IN AZURE POPULATED FROM A PLAINTEXT LIST OF IPV4 ADDRESSES IN CIDR FORMAT"
 Write-Host -ForegroundColor Red "THIS IS THE INTERACTIVE VERSION OF THE SCRIPT INTENDED TO BE RAN MANUALLY BY AN ADMIN USER"
 Write-Host -ForegroundColor Red "BEFORE CONTINUING, YOU WILL NEED TO KNOW THE TENANT ID OF THE AZURE ENVIRONMENT YOU WISH TO CONNECT TO AND THE DISPLAY NAME YOU WANT TO SET FOR YOUR NEW NAMED LOCATION"
-Read-Host "Press Enter when you are ready to continue"
+
+
+Read-Host "Press Enter when you are ready to continue..."
 
 ####### START OF VARIABLES TABLE #######
 # Declares the ID of the tenant you want to connect to
@@ -55,18 +58,18 @@ $tenantID = Read-Host "Enter the tenant ID you want to Connect to"
 
 
 # Call the function to initialize ipRanges and construct params once
-Write-Host -ForegroundColor Cyan "Generating Parameter Variable from txt file"
+Write-Host -ForegroundColor Cyan "Generating Parameter Variable from txt file $filePath..."
 $params = Initialize-IpRangesAndParams
 Write-Host -ForegroundColor Green "Done"
 
 #Connect to MgGraph with correct Scope
-Write-Host -ForegroundColor Cyan "Connecting to $tenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All"""
-Write-Host -ForegroundColor Cyan "Enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up"
+Write-Host -ForegroundColor Cyan "Connecting to $tenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All""..."
+Write-Host -ForegroundColor Cyan "Enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
 Connect-MgGraph -NoWelcome -TenantID $tenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
 Write-Host -ForegroundColor Green "Done"
 
 # Update the Named Location
-Write-Host -ForegroundColor Cyan "Creating new Named Location"
+Write-Host -ForegroundColor Cyan "Creating new Named Location..."
 New-MgIdentityConditionalAccessNamedLocation -BodyParameter $params
 Write-Host -ForegroundColor Green "Done"
 
