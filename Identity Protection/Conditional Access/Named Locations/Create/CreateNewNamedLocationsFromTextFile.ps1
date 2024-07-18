@@ -52,7 +52,10 @@ function Connect-MgGraphFunction {
         [string]$TenantID
     )
 
-    Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+    # Check if already connected to MgGraph
+    if (-not (Get-MgGraphConnectionInfo)) {
+        Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+    }
 }
 
 ####### END OF FUNCTIONS BLOCK #######

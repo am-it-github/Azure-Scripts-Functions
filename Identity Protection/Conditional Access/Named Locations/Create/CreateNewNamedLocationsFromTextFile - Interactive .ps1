@@ -46,9 +46,15 @@ function Connect-MgGraphFunction {
         [string]$TenantID
     )
 
-    Write-Host -ForegroundColor Cyan "Connecting to $TenantID with Scopes ""Policy.ReadWrite.ConditionalAccess,Policy.Read.All""..."
-    Write-Host -ForegroundColor Red "If Prompted, enter Username and Password of account with relevant MsGraph Permissions in the Window that pops up..."
-    Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+    # Check if already connected to MgGraph
+    if (-not (Get-MgGraphConnectionInfo)) {
+        Write-Host -ForegroundColor Cyan "Connecting to MgGraph..."
+        Write-Host -ForegroundColor Red "If Prompted, sign into MgGraph with an account that has permissions to change CA Policies"
+        Connect-MgGraph -NoWelcome -TenantID $TenantID -Scopes Policy.ReadWrite.ConditionalAccess,Policy.Read.All
+        Write-Host -ForegroundColor Green "Done"
+    } else {
+        Write-Host -ForegroundColor Green "Already connected to MgGraph."
+    }
 }
 ####### END OF FUNCTIONS BLOCK #######
 
