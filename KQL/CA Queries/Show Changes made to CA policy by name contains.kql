@@ -1,0 +1,8 @@
+AuditLogs
+| where OperationName in ("Update conditional access policy", "Create conditional access policy", "Delete conditional access policy")
+| extend TargetResourceDetails = parse_json(TargetResources)
+| mv-expand TargetResourceDetails  // Expand the array if TargetResources is an array
+| extend PolicyDisplayName = tostring(TargetResourceDetails.displayName)  // Extract the display name
+| where PolicyDisplayName contains "CHANGE TO NAME STRING YOU WANT TO FILTER BY"  // Filter by substring "XXXXX"
+| project TimeGenerated, OperationName, Identity, ResultDescription, PolicyDisplayName, TargetResourceDetails
+| order by TimeGenerated desc
