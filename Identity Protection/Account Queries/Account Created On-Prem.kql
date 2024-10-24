@@ -1,0 +1,4 @@
+SecurityEvent |
+where  EventID == 4720  |
+where TargetAccount == "DOMAIN\\USER.NAME" |
+project TimeGenerated, TargetAccount, EventID, Computer, SubjectAccount
