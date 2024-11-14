@@ -1,0 +1,4 @@
+Usage 
+| where TimeGenerated > todatetime('2024-10-01T00:00:00.0000000Z')
+| where TimeGenerated < todatetime('2024-11-01T00:00:00.0000000Z')| summarize IngestedGB=round(sum(Quantity)/1000, 1) by DataType, bin(TimeGenerated,1d)
+| render columnchart  

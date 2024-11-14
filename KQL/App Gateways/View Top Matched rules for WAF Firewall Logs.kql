@@ -1,0 +1,5 @@
+// Run this against the LAW holding the logs
+AzureDiagnostics
+| where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayFirewallLog"
+| summarize count() by ruleId_s, bin(TimeGenerated, 1m)
+| where count_ > 2 | render timechart

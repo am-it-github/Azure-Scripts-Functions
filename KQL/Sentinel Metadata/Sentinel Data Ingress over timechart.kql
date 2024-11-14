@@ -1,0 +1,4 @@
+Usage
+| where TimeGenerated > todatetime('2024-10-01T00:00:00.0000000Z') //alter date/time accordingly
+| where TimeGenerated < todatetime('2024-11-01T00:00:00.0000000Z') //alter date/time accordingly
+| make-series GBIngested=sum(Quantity)/1000 default=0 on TimeGenerated from datetime(2024-10-01) to datetime(2024-11-01) step 1d | render timechart
