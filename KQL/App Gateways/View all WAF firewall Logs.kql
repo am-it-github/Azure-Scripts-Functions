@@ -2,4 +2,4 @@
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.NETWORK" and Category == "ApplicationGatewayFirewallLog"
 // Add the below to filter out a lot of redundant data such as subscription and gateway name (useful if you are running this within the WAF blade itself)
-| project Resource, requestUri_s, Message, isAccessPolicyMatch_b, clientIp_s, ruleId_s, ruleGroup_s, action_s, details_message_s, details_data_s
+| project TimeGenerated, Resource, requestUri_s, Message, isAccessPolicyMatch_b, clientIp_s, ruleId_s, ruleGroup_s, action_s, details_message_s, details_data_s
