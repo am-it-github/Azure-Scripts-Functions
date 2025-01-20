@@ -1,0 +1,4 @@
+SigninLogs
+| where (LocationDetails["countryOrRegion"]) != "GB"
+| where ConditionalAccessStatus contains "success"
+| project UserDisplayName, TimeGenerated, Location, ResourceDisplayName
