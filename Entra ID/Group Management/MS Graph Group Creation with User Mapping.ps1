@@ -55,7 +55,7 @@ foreach ($entry in $entries) {
             $groupId = $existingGroup.Id
         }
 
-        # Cache the group to avoid 
+        # Cache the group to avoid duplication
         $groupCache[$groupName] = $groupId
     }
 
