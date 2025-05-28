@@ -27,7 +27,7 @@
 $Path = "PATH_TO_YOUR_CSV"
 
 
-#Connect to Graph With Required Perms
+# Connect to Graph With Required Scope
 Connect-MgGraph -Scopes "Group.ReadWrite.All","User.Read.All"
 
 # Import CSV
