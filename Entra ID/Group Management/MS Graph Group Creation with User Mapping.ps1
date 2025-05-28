@@ -31,7 +31,7 @@ $Path = "PATH_TO_YOUR_CSV"
 Connect-MgGraph -Scopes "Group.ReadWrite.All","User.Read.All"
 
 # Import CSV
-$entries = Import-Csv -Path $path
+$entries = Import-Csv -Path $Path
 
 # Group cache to avoid duplicate creation
 $groupCache = @{}
