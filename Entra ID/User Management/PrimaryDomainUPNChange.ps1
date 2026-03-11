@@ -2,6 +2,11 @@
 # Install once if needed:
 # Install-Module Microsoft.Graph -Scope CurrentUser
 
+
+# THIS SCRIPT CONNECTS TO GRAPH, AND CHANGES USERS PRIMARY UPNS FROM SOURCEDOMAIN TO TARGETDOMAIN
+# THE SCRIPT EXPECTS A CSV IN THE SAME FORMAT AS THAT EXPORTED FROM THE GUI OR USING THE GETCOMPANYUSERS.PS1 SCRIPT
+
+
 # -----------------------------
 # VARIABLES - EDIT THESE
 # -----------------------------
@@ -9,7 +14,7 @@ $CsvPath                   = "C:\Temp\TESTUserExportTEST.csv"
 $SourceDomain              = "CHANGE ME (WHAT THE DOMAIN ALREADY IS)"
 $TargetDomain              = "CHANGE ME (WHAT YOU WANT TO CHANGE IT TO)"
 $RequiredCompanyName       = "CHANGE ME" # THIS IS A FAILSAFE CATCH
-$RequireSourceDomainMatch  = $true
+$RequireSourceDomainMatch  = $true # THIS IS A SECOND FAILSAFE
 
 # -----------------------------
 # CONNECT TO GRAPH
