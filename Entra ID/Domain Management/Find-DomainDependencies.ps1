@@ -18,26 +18,6 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 
-$scriptContent = Get-Content -Path $PSCommandPath -Raw
-
-$blockedPatterns = @(
-    'Update-Mg',
-    'Set-Mg',
-    'Remove-Mg',
-    'New-Mg',
-    'Invoke-MgGraphRequest\s+-Method\s+PATCH',
-    'Invoke-MgGraphRequest\s+-Method\s+POST',
-    'Invoke-MgGraphRequest\s+-Method\s+PUT',
-    'Invoke-MgGraphRequest\s+-Method\s+DELETE'
-)
-
-foreach ($pattern in $blockedPatterns) {
-    if ($scriptContent -match $pattern) {
-        throw "Blocked: write operation detected in audit-only script. Pattern matched: $pattern"
-    }
-}
-
-
 # =========================
 # FUNCTIONS
 # =========================
